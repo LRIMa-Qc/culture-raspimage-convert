@@ -1,0 +1,7 @@
+[package]
+name = "culture-raspimage-convert"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+guestfs = "0.1.0"
