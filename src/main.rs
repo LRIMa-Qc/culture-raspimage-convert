@@ -74,6 +74,7 @@ fn handle_systemd_services(
 
     let formatted_file = format_file_from_keys_in_template(current_file, missing_keys);
     let file_path = "/etc/systemd/system/LRIMa-central.service";
+    println!("{}", formatted_file.as_bytes().len());
     g.write(file_path, formatted_file.as_bytes()).unwrap();
     g.ln_s(
         file_path,
