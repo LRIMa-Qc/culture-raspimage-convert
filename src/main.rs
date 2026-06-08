@@ -23,10 +23,12 @@ fn main() {
     let partitions = g.list_partitions().unwrap();
     println!("{:?}", partitions);
     g.mount(&partitions[1], "/").unwrap();
-
     // read a file
-    let data = g.read_file("/etc/sudoers").unwrap();
-    println!("{:?}", data);
+    // let data = g.read_file("/etc/sudoers").unwrap();
+    let files = g.readdir("/etc/systemd/system/").unwrap();
+    for i in files {
+        println!("{}", i.name);
+    }
 
     // write a file
     // sync/umount/close
