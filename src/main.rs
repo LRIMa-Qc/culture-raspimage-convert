@@ -73,14 +73,10 @@ fn handle_systemd_services(
     missing_keys.insert(String::from("ERROR_LOGS"), error_logs);
 
     let formatted_file = format_file_from_keys_in_template(current_file, missing_keys);
-
-    g.write(
-        "/etc/systemd/system/LRIMa-central.service",
-        formatted_file.as_bytes(),
-    )
-    .unwrap();
+    let file_path = "/etc/systemd/system/LRIMa-central.service";
+    g.write(file_path, formatted_file.as_bytes()).unwrap();
     g.ln_s(
-        "/etc/systemd/system/LRIMa-central.service",
+        file_path,
         "/etc/systemd/system/multi-user.target.wants/LRIMa-central.service",
     )
     .unwrap();
