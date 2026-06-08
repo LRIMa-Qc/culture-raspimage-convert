@@ -18,7 +18,7 @@ fn main() {
             copyonread: None,
         },
     )
-    .unwrap();
+    .expect("Drive had error, you are on your own.");
     g.launch().unwrap();
     let partitions = g.list_partitions().unwrap();
     println!("{:?}", partitions);
