@@ -30,12 +30,7 @@ fn main() {
     g.launch().unwrap();
     let partitions = g.list_partitions().unwrap();
     g.mount(&partitions[1], "/").unwrap();
-    // read a file
     g.ln_s("asd", "asd").unwrap();
-
-    for i in files {
-        println!("{}", i.name);
-    }
 
     // write a file
     // sync/umount/close
