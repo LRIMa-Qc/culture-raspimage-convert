@@ -33,14 +33,8 @@ fn main() {
 
     handle_systemd_services(
         String::from("/opt/LRIMa-central"),
-        String::from(
-            "/var/log/LRIMa/standard.log
-",
-        ),
-        String::from(
-            "/var/log/LRIMa/error.log
-",
-        ),
+        String::from("/var/log/LRIMa/standard.log"),
+        String::from("/var/log/LRIMa/error.log"),
         &g,
     )
     .unwrap();
