@@ -30,8 +30,21 @@ fn main() {
     g.launch().unwrap();
     let partitions = g.list_partitions().unwrap();
     g.mount(&partitions[1], "/").unwrap();
-    g.ln_s("asd", "asd").unwrap();
 
+    handle_systemd_services(
+        String::from("/opt/LRIMa-central"),
+        String::from(
+            "/var/log/LRIMa/standard.log
+",
+        ),
+        String::from(
+            "/var/log/LRIMa/error.log
+",
+        ),
+        &g,
+    )
+    .unwrap();
+    handle_bluetooth_services(String::from("CONTROLLER_NAME"), &g).unwrap();
     // write a file
     // sync/umount/close
     g.sync().unwrap();
@@ -57,7 +70,7 @@ fn handle_systemd_services(
     working_directory: String,
     standard_logs: String,
     error_logs: String,
-    g: Handle,
+    g: &Handle,
 ) -> Result<(), std::io::Error> {
     let current_file = File::open("config_file/LRIMa-central.service")?;
     let mut missing_keys = HashMap::new();
@@ -80,7 +93,7 @@ fn handle_systemd_services(
     Ok(())
 }
 
-fn handle_bluetooth_services(controller_name: String, g: Handle) -> Result<(), std::io::Error> {
+fn handle_bluetooth_services(controller_name: String, g: &Handle) -> Result<(), std::io::Error> {
     let current_file = File::open("config_file/bluetooth.conf")?;
     let mut missing_keys = HashMap::new();
     missing_keys.insert(String::from("CONTROLLER_NAME"), controller_name);
