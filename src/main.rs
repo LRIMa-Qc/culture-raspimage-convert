@@ -25,7 +25,7 @@ fn main() {
     g.mount(&partitions[0], "/").unwrap();
 
     // read a file
-    let _data = g.read_file("/bin/cp").unwrap();
+    let _data = g.read_file("/usr/bin/cp").unwrap();
 
     // write a file
     // sync/umount/close
