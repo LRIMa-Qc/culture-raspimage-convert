@@ -66,7 +66,7 @@ fn handle_systemd_services(
     error_logs: String,
     g: &Handle,
 ) -> Result<(), std::io::Error> {
-    let current_file = File::open("config_file/LRIMa-central.service")?;
+    let current_file = File::open("config_file/LRIMa-central.service").expect("fuck you mean");
     let mut missing_keys = HashMap::new();
     missing_keys.insert(String::from("WORKING_DIRECTORY"), working_directory);
     missing_keys.insert(String::from("STANDARD_LOGS"), standard_logs);
