@@ -22,7 +22,7 @@ fn main() {
     g.launch().unwrap();
     let partitions = g.list_partitions().unwrap();
     println!("{:?}", partitions);
-    g.mount(&partitions[0], "/").unwrap();
+    g.mount(&partitions[1], "/").unwrap();
 
     // read a file
     let _data = g.read_file("/usr/bin/cp").unwrap();
