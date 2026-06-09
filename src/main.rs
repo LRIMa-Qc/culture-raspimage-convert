@@ -3,6 +3,7 @@ use std::{
     error::Error,
     fs::File,
     io::{BufReader, Read},
+    str,
 };
 
 use guestfs::{AddDriveOptArgs, Handle};
@@ -50,9 +51,10 @@ fn format_file_from_keys_in_template(
     keys_in_template: HashMap<String, String>,
 ) -> String {
     let mut env = Environment::new();
-    let buf_read = BufReader::new(template);
-    let file_bytes = buf_read.buffer();
-    let data_as_string = str::from_utf8(file_bytes).unwrap();
+    let mut buf_read = BufReader::new(template);
+    let mut file_bytes = Vec::new();
+    buf_read.read_to_end(&mut file_bytes).unwrap();
+    let data_as_string = str::from_utf8(&file_bytes).unwrap();
     env.add_template("file", data_as_string).unwrap();
     let tmpl = env.get_template("file").unwrap();
     match tmpl.render(context! {keys_in_template}) {
