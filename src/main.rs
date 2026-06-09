@@ -18,6 +18,8 @@ struct Config {
     wifi_ssid: String,
     wifi_password: String,
     hostname: String,
+    account_name: String,
+    account_password: String,
 }
 
 #[derive(Parser, Debug)]
@@ -89,6 +91,14 @@ fn handle_systemd_boot_services(
         entries.get("WORKING_DIRECTORY").unwrap().clone(),
     );
 
+    missing_keys.insert(
+        String::from("ACCOUNT_NAME"),
+        entries.get("ACCOUNT_NAME").unwrap().clone(),
+    );
+    missing_keys.insert(
+        String::from("ACCOUNT_PASSWORD"),
+        entries.get("ACCOUNT_PASSWORD").unwrap().clone(),
+    );
     missing_keys.insert(
         String::from("FILENAME"),
         entries.get("FILENAME").unwrap().clone(),
@@ -210,6 +220,15 @@ fn handle_bootstrap_install_script(
         entries.get("WORKING_DIRECTORY").unwrap().clone(),
     );
 
+    missing_keys.insert(
+        String::from("ACCOUNT_NAME"),
+        entries.get("ACCOUNT_NAME").unwrap().clone(),
+    );
+    missing_keys.insert(
+        String::from("ACCOUNT_PASSWORD"),
+        entries.get("ACCOUNT_PASSWORD").unwrap().clone(),
+    );
+
     let formatted_file = format_file_from_keys_in_template(&current_file, missing_keys);
     g.mkdir_p("/var/local/LRIMa-central").unwrap();
     g.write(
@@ -253,6 +272,11 @@ fn handle_all(config: &Config, g: &Handle) -> Result<(), std::io::Error> {
     entries.insert(String::from("WIFI_PASSWORD"), config.wifi_password.clone());
     entries.insert(String::from("FILENAME"), config.filename_of_repo.clone());
     entries.insert(String::from("HOSTNAME"), config.hostname.clone());
+    entries.insert(String::from("ACCOUNT_NAME"), config.account_name.clone());
+    entries.insert(
+        String::from("ACCOUNT_PASSWORD"),
+        config.account_password.clone(),
+    );
 
     handle_systemd_boot_services(&entries, g)?;
     handle_bluetooth_services(&entries, g)?;

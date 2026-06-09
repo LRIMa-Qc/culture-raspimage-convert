@@ -10,17 +10,19 @@ fi
 WORKSPACE_PATH={{WORKING_DIRECTORY}}
 FILENAME={{FILENAME}}
 
-sudo useradd --system --no-create-home lrima 2>/dev/null || true
+sudo useradd {{ACCOUNT_NAME}} 2>/dev/null || true
+echo "{{ACCOUNT_NAME}}:{{ACCOUNT_PASSWORD}}" | sudo chpasswd
 
 sudo apt-get update
 sudo apt-get upgrade -y -q;
 
-sudo apt-get install bluez bluetooth python3 bluez-tools python3-pip python3-venv git -q -y
+sudo apt-get install bluez bluetooth python3 bluez-tools python3-pip python3-venv git openssh-server -q -y
 
 sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
 sudo systemctl restart bluetooth
-sudo systemctl enable bluetooth
+sudo systemctl enable --now bluetooth
+sudo systemctl enable --now ssh
 
 RASP_VERSION="$(cat /sys/firmware/devicetree/base/model)"
 IS_RASP_VERSION_5=false

@@ -5,8 +5,8 @@ After=network-online.target bluetooth.target
 
 [Service]
 Type=simple
-User=lrima
-Group=lrima
+User={{ACCOUNT_NAME}}
+Group={{ACCOUNT_NAME}}
 WorkingDirectory={{WORKING_DIRECTORY}}/{{FILENAME}}
 ExecStart={{WORKING_DIRECTORY}}/{{FILENAME}}/code/central/venv/bin/python -u main.py
 Restart=on-failure
