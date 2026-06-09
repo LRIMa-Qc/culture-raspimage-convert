@@ -23,7 +23,7 @@ struct Config {
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
-    #[arg(short, long)]
+    #[arg(short, long, long_about = "tomate")]
     file_path: String,
 }
 
