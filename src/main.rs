@@ -1,5 +1,6 @@
 use std::{collections::HashMap, env, fs, path::PathBuf};
 
+use clap::Parser;
 use guestfs::{AddDriveOptArgs, Handle};
 use minijinja::Environment;
 use serde::Deserialize;
@@ -19,11 +20,17 @@ struct Config {
     wifi_password: String,
     hostname: String,
 }
+#[derive(Parser, Debug)]
+#[command(version, about, long_about = None)]
+struct Args {
+    #[arg(short, long)]
+    file_path: String,
+}
 
 fn main() {
-    let config_path = env::args().nth(1).expect("missing config path argument");
+    let arg = Args::parse();
     let config: Config =
-        serde_json::from_str(&fs::read_to_string(PathBuf::from(config_path)).unwrap())
+        serde_json::from_str(&fs::read_to_string(PathBuf::from(arg.file_path)).unwrap())
             .expect("invalid config json");
 
     let g = Handle::create().unwrap();
