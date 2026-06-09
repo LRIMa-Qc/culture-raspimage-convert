@@ -1,8 +1,8 @@
 {
     "working_directory": "/opt/LRIMa-central",
     "filename_of_repo": "iot_stuff",
-    "standard_logs": "/var/run/LRIMa-central/standard.log",
-    "error_logs": "/var/run/LRIMa-central/error.log",
+    "standard_logs": "/var/log/LRIMa-central/standard.log",
+    "error_logs": "/var/log/LRIMa-central/error.log",
     "bluetooth_controller_name": "LRIMa-central-1",
     "obj_id": "object-id",
     "auth_token": "example-auth-token",

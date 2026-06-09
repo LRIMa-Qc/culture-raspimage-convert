@@ -103,6 +103,7 @@ fn handle_systemd_boot_services(
         entries.get("ERROR_LOGS").unwrap().clone(),
     );
 
+    g.mkdir_p("/var/log/LRIMa-central").unwrap();
     let formatted_file = format_file_from_keys_in_template(&current_file, missing_keys);
     let file_path = "/etc/systemd/system/LRIMa-central.service";
     g.write(file_path, formatted_file.as_bytes()).unwrap();
@@ -206,6 +207,7 @@ fn handle_bootstrap_install_script(
     );
 
     let formatted_file = format_file_from_keys_in_template(&current_file, missing_keys);
+    g.mkdir_p("/var/run/LRIMa-central").unwrap();
     g.write(
         "/var/run/LRIMa-central/install.sh",
         formatted_file.as_bytes(),
@@ -223,7 +225,7 @@ fn handle_bootstrap_install_service(g: &Handle) -> Result<(), std::io::Error> {
 
     g.ln_s(
         file_path,
-        "/etc/systemd/system/multi-user.target.wants/LRIMa-central.service",
+        "/etc/systemd/system/multi-user.target.wants/LRIMa-centrale-install-runonce.service",
     )
     .expect("ln in bootstrap service done fucked up today,");
     Ok(())
