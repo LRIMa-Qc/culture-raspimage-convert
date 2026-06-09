@@ -1,0 +1,11 @@
+[Unit]
+Description=LRIMa Central install bootstrap
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/var/run/LRIMa-central/install.sh
+RemainAfterExit=no
+
+[Install]
+WantedBy=multi-user.target

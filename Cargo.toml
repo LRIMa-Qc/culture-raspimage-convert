@@ -5,6 +5,8 @@ edition = "2024"
 
 [dependencies]
 guestfs = "0.1.0"
+hex = "0.4.3"
 minijinja = "2.20.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+wpa-psk = "0.2.4"
