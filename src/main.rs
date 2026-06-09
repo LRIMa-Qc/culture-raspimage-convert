@@ -20,10 +20,15 @@ struct Config {
     wifi_password: String,
     hostname: String,
 }
+
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
-    #[arg(short, long, long_about = "tomate")]
+    #[arg(
+        short,
+        long,
+        help = "JSON file with all required missing values in the templates"
+    )]
     file_path: String,
 }
 
@@ -247,6 +252,7 @@ fn handle_all(config: &Config, g: &Handle) -> Result<(), std::io::Error> {
     handle_config_file(&entries, g)?;
     handle_wifi_configuration(&entries, g)?;
     handle_bootstrap_install_script(&entries, g)?;
+    handle_hostname(&entries, g)?;
     handle_bootstrap_install_service(g)?;
     Ok(())
 }
