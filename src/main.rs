@@ -1,4 +1,4 @@
-use std::{collections::HashMap, env, fs, path::PathBuf};
+use std::{collections::HashMap, fs, path::PathBuf};
 
 use clap::Parser;
 use guestfs::{AddDriveOptArgs, Handle};
