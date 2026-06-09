@@ -146,7 +146,7 @@ fn handle_config_file(entries: &HashMap<String, String>, g: &Handle) -> Result<(
     let formatted_file = format_file_from_keys_in_template(&current_file, missing_keys);
     g.mkdir_p("/var/local/LRIMa-central").unwrap();
     g.write(
-        "/var/local/LIRMa-central/config.ini",
+        "/var/local/LRIMa-central/config.ini",
         formatted_file.as_bytes(),
     )
     .unwrap();
