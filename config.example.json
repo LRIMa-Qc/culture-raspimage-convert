@@ -3,10 +3,12 @@
     "filename_of_repo": "iot_stuff",
     "standard_logs": "/var/log/LRIMa-central/standard.log",
     "error_logs": "/var/log/LRIMa-central/error.log",
-    "bluetooth_controller_name": "LRIMa-central-1",
-    "obj_id": "object-id",
-    "auth_token": "example-auth-token",
-    "wifi_ssid": "example-wifi-name",
-    "wifi_password": "very-strong-password",
-    "hostname": "LRIMa-central-1"
+    "bluetooth_controller_name": "LRIMa-Central-3",
+    "obj_id": "Object_id",
+    "auth_token": "very_secret_auth_token",
+    "wifi_ssid": "wifi",
+    "wifi_password": "password",
+    "hostname": "LRIMa-Central-3",
+    "account_name": "Sire patate",
+    "account_password": "et son royaume"
 }
