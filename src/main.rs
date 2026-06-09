@@ -12,7 +12,7 @@ struct Config {
     filename_of_repo: String,
     standard_logs: String,
     error_logs: String,
-    controller_name: String,
+    bluetooth_controller_name: String,
     obj_id: String,
     auth_token: String,
     wifi_ssid: String,
@@ -239,7 +239,7 @@ fn handle_all(config: &Config, g: &Handle) -> Result<(), std::io::Error> {
     entries.insert(String::from("ERROR_LOGS"), config.error_logs.clone());
     entries.insert(
         String::from("CONTROLLER_NAME"),
-        config.controller_name.clone(),
+        config.bluetooth_controller_name.clone(),
     );
     entries.insert(String::from("OBJ_ID"), config.obj_id.clone());
     entries.insert(String::from("AUTH_TOKEN"), config.auth_token.clone());
