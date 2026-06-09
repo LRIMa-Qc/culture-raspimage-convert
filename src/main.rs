@@ -1,11 +1,30 @@
-use std::{collections::HashMap, fs};
+use std::{collections::HashMap, env, fs, path::PathBuf};
 
 use guestfs::{AddDriveOptArgs, Handle};
 use minijinja::Environment;
+use serde::Deserialize;
+
+#[derive(Deserialize)]
+struct Config {
+    image_path: String,
+    working_directory: String,
+    standard_logs: String,
+    error_logs: String,
+    controller_name: String,
+    obj_id: String,
+    auth_token: String,
+    wifi_ssid: String,
+    wifi_presharedkey: String,
+}
+
 fn main() {
+    let config_path = env::args().nth(1).expect("missing config path argument");
+    let config: Config = serde_json::from_str(&fs::read_to_string(PathBuf::from(config_path)).unwrap())
+        .expect("invalid config json");
+
     let g = Handle::create().unwrap();
     g.add_drive(
-        "2026-04-21-raspios-trixie-arm64-lite.img",
+        &config.image_path,
         AddDriveOptArgs {
             readonly: Some(false),
             format: None,
@@ -26,7 +45,7 @@ fn main() {
     let partitions = g.list_partitions().unwrap();
     g.mount(&partitions[1], "/").unwrap();
 
-    handle_all(&g).unwrap();
+    handle_all(&config, &g).unwrap();
     // write a file
     // sync/umount/close
     g.sync().unwrap();
@@ -129,28 +148,16 @@ fn handle_wifi_configuration(
         .unwrap();
     Ok(())
 }
-fn handle_all(g: &Handle) -> Result<(), std::io::Error> {
+fn handle_all(config: &Config, g: &Handle) -> Result<(), std::io::Error> {
     let mut entries = HashMap::new();
-    entries.insert(
-        String::from("WORKING_DIRECTORY"),
-        String::from("/opt/LRIMa-central"),
-    );
-    entries.insert(
-        String::from("STANDARD_LOGS"),
-        String::from("/var/log/LRIMa/standard.log"),
-    );
-    entries.insert(
-        String::from("ERROR_LOGS"),
-        String::from("/var/log/LRIMa/error.log"),
-    );
-    entries.insert(String::from("CONTROLLER_NAME"), String::from("CONTROLLER_NAME"));
-    entries.insert(String::from("OBJ_ID"), String::from("OBJ_ID"));
-    entries.insert(String::from("AUTH_TOKEN"), String::from("AUTH_TOKEN"));
-    entries.insert(String::from("WIFI_SSID"), String::from("WIFI_SSID"));
-    entries.insert(
-        String::from("WIFI_PRESHAREDKEY"),
-        String::from("WIFI_PRESHAREDKEY"),
-    );
+    entries.insert(String::from("WORKING_DIRECTORY"), config.working_directory.clone());
+    entries.insert(String::from("STANDARD_LOGS"), config.standard_logs.clone());
+    entries.insert(String::from("ERROR_LOGS"), config.error_logs.clone());
+    entries.insert(String::from("CONTROLLER_NAME"), config.controller_name.clone());
+    entries.insert(String::from("OBJ_ID"), config.obj_id.clone());
+    entries.insert(String::from("AUTH_TOKEN"), config.auth_token.clone());
+    entries.insert(String::from("WIFI_SSID"), config.wifi_ssid.clone());
+    entries.insert(String::from("WIFI_PRESHAREDKEY"), config.wifi_presharedkey.clone());
 
     handle_systemd_services(&entries, g)?;
     handle_bluetooth_services(&entries, g)?;
