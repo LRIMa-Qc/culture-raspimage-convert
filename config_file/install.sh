@@ -34,7 +34,7 @@ if [[ ! -d "$WORKSPACE_PATH/$FILENAME/.git" ]]; then
 fi
 cd "$WORKSPACE_PATH/$FILENAME/code/central"
 
-cp /tmp/config.ini .
+cp /var/run/config.ini .
 
 python3 -m venv venv
 if [[ $IS_RASP_VERSION_5 == true ]]; then

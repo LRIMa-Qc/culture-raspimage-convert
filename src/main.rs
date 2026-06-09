@@ -144,13 +144,17 @@ fn handle_config_file(entries: &HashMap<String, String>, g: &Handle) -> Result<(
     );
 
     let formatted_file = format_file_from_keys_in_template(&current_file, missing_keys);
-    g.write("/tmp/config.ini", formatted_file.as_bytes())
-        .unwrap();
+    g.mkdir_p("/var/local/LRIMa-central").unwrap();
+    g.write(
+        "/var/local/LIRMa-central/config.ini",
+        formatted_file.as_bytes(),
+    )
+    .unwrap();
     Ok(())
 }
 
 fn handle_hostname(entries: &HashMap<String, String>, g: &Handle) -> Result<(), std::io::Error> {
-    let current_file = fs::read_to_string("config_file/wpa_supplicant.conf")?;
+    let current_file = fs::read_to_string("config_file/hostname")?;
     let mut missing_keys = HashMap::new();
 
     missing_keys.insert(
@@ -207,9 +211,9 @@ fn handle_bootstrap_install_script(
     );
 
     let formatted_file = format_file_from_keys_in_template(&current_file, missing_keys);
-    g.mkdir_p("/var/run/LRIMa-central").unwrap();
+    g.mkdir_p("/var/local/LRIMa-central").unwrap();
     g.write(
-        "/var/run/LRIMa-central/install.sh",
+        "/var/local/LRIMa-central/install.sh",
         formatted_file.as_bytes(),
     )
     .expect("fucked up the write to install.sh");

@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/var/run/LRIMa-central/install.sh
+ExecStart=/var/local/LRIMa-central/install.sh
 RemainAfterExit=no
 
 [Install]
