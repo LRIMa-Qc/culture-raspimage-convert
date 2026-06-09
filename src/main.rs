@@ -8,7 +8,6 @@ use wpa_psk::{Passphrase, Ssid, wpa_psk};
 
 #[derive(Deserialize)]
 struct Config {
-    image_path: String,
     working_directory: String,
     filename_of_repo: String,
     standard_logs: String,
@@ -29,18 +28,20 @@ struct Args {
         long,
         help = "JSON file with all required missing values in the templates"
     )]
-    file_path: String,
+    config_file_path: String,
+    #[arg(short, long, help = "Raspberry pi image path")]
+    raspberry_pi_image_file_path: String,
 }
 
 fn main() {
     let arg = Args::parse();
     let config: Config =
-        serde_json::from_str(&fs::read_to_string(PathBuf::from(arg.file_path)).unwrap())
+        serde_json::from_str(&fs::read_to_string(PathBuf::from(arg.config_file_path)).unwrap())
             .expect("invalid config json");
 
     let g = Handle::create().unwrap();
     g.add_drive(
-        &config.image_path,
+        &arg.raspberry_pi_image_file_path,
         AddDriveOptArgs {
             readonly: Some(false),
             format: None,
