@@ -15,6 +15,7 @@ FILENAME={{FILENAME}}
 
 sudo useradd {{ACCOUNT_NAME}} 2>/dev/null || true
 echo "{{ACCOUNT_NAME}}:{{ACCOUNT_PASSWORD}}" | sudo chpasswd
+sudo usermod -aG sudo {{ACCOUNT_NAME}}
 
 sudo apt-get update
 sudo apt-get upgrade -y -q;
