@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+sudo iw set reg {{WIFI_COUNTRY}}
+
 if [ "$EUID" -ne 0 ]
 then
     exec sudo -s "$0" "$@"
@@ -22,6 +24,7 @@ sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
 sudo systemctl restart bluetooth
 sudo systemctl enable --now bluetooth
+sudo systemctl enable --now NetworkManager
 sudo systemctl enable --now ssh
 
 RASP_VERSION="$(cat /sys/firmware/devicetree/base/model)"

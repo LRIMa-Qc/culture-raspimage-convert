@@ -4,7 +4,6 @@ use clap::Parser;
 use guestfs::{AddDriveOptArgs, Handle};
 use minijinja::Environment;
 use serde::Deserialize;
-use wpa_psk::{Passphrase, Ssid, wpa_psk};
 
 #[derive(Deserialize)]
 struct Config {
@@ -17,6 +16,7 @@ struct Config {
     auth_token: String,
     wifi_ssid: String,
     wifi_password: String,
+    wifi_country: String,
     hostname: String,
     account_name: String,
     account_password: String,
@@ -186,7 +186,7 @@ fn handle_hostname(entries: &HashMap<String, String>, g: &Handle) -> Result<(), 
 
     let formatted_file = format_file_from_keys_in_template(&current_file, missing_keys);
     g.write("/etc/hostname", formatted_file.as_bytes())
-        .expect("fucked up the write to wpa_supplicant.conf");
+        .expect("fucked up the write to hostname.conf");
     Ok(())
 }
 
@@ -194,26 +194,45 @@ fn handle_wifi_configuration(
     entries: &HashMap<String, String>,
     g: &Handle,
 ) -> Result<(), std::io::Error> {
-    let current_file = fs::read_to_string("config_file/wpa_supplicant.conf")?;
+    let current_file = fs::read_to_string("config_file/networkmanager.nmconnection")?;
     let mut missing_keys = HashMap::new();
     missing_keys.insert(
         String::from("WIFI_SSID"),
         entries.get("WIFI_SSID").unwrap().clone(),
     );
-    let pre_shared_key = wpa_psk(
-        &Ssid::try_from(entries.get("WIFI_SSID").unwrap().as_str()).expect("Bad SSID."),
-        &Passphrase::try_from(entries.get("WIFI_PASSWORD").unwrap().as_str()).unwrap(),
-    );
     missing_keys.insert(
-        String::from("WIFI_PRESHAREDKEY"),
-        hex::encode(pre_shared_key),
+        String::from("WIFI_PASSWORD"),
+        entries.get("WIFI_PASSWORD").unwrap().clone(),
     );
     let formatted_file = format_file_from_keys_in_template(&current_file, missing_keys);
+    g.mkdir_p("/etc/NetworkManager/system-connections").unwrap();
     g.write(
-        "/etc/wpa_supplicant/wpa_supplicant.conf",
+        "/etc/NetworkManager/system-connections/LRIMa.nmconnection",
         formatted_file.as_bytes(),
     )
     .unwrap();
+    g.chmod(
+        0o600,
+        "/etc/NetworkManager/system-connections/LRIMa.nmconnection",
+    )
+    .unwrap();
+    Ok(())
+}
+
+fn handle_wifi_country(
+    entries: &HashMap<String, String>,
+    g: &Handle,
+) -> Result<(), std::io::Error> {
+    let current_file = fs::read_to_string("config_file/cfg80211.conf")?;
+    let mut missing_keys = HashMap::new();
+    missing_keys.insert(
+        String::from("WIFI_COUNTRY"),
+        entries.get("WIFI_COUNTRY").unwrap().clone(),
+    );
+
+    let formatted_file = format_file_from_keys_in_template(&current_file, missing_keys);
+    g.write("/etc/modprobe.d/cfg80211.conf", formatted_file.as_bytes())
+        .unwrap();
     Ok(())
 }
 fn handle_bootstrap_install_script(
@@ -239,6 +258,11 @@ fn handle_bootstrap_install_script(
     missing_keys.insert(
         String::from("ACCOUNT_PASSWORD"),
         entries.get("ACCOUNT_PASSWORD").unwrap().clone(),
+    );
+
+    missing_keys.insert(
+        String::from("WIFI_COUNTRY"),
+        entries.get("WIFI_COUNTRY").unwrap().clone(),
     );
 
     let formatted_file = format_file_from_keys_in_template(&current_file, missing_keys);
@@ -282,6 +306,7 @@ fn handle_all(config: &Config, g: &Handle) -> Result<(), std::io::Error> {
     entries.insert(String::from("AUTH_TOKEN"), config.auth_token.clone());
     entries.insert(String::from("WIFI_SSID"), config.wifi_ssid.clone());
     entries.insert(String::from("WIFI_PASSWORD"), config.wifi_password.clone());
+    entries.insert(String::from("WIFI_COUNTRY"), config.wifi_country.clone());
     entries.insert(String::from("FILENAME"), config.filename_of_repo.clone());
     entries.insert(String::from("HOSTNAME"), config.hostname.clone());
     entries.insert(String::from("ACCOUNT_NAME"), config.account_name.clone());
@@ -294,6 +319,7 @@ fn handle_all(config: &Config, g: &Handle) -> Result<(), std::io::Error> {
     handle_bluetooth_services(&entries, g)?;
     handle_config_file(&entries, g)?;
     handle_wifi_configuration(&entries, g)?;
+    handle_wifi_country(&entries, g)?;
     handle_bootstrap_install_script(&entries, g)?;
     handle_hostname(&entries, g)?;
     handle_bootstrap_install_service(g)?;
