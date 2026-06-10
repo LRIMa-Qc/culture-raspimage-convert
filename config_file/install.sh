@@ -48,5 +48,6 @@ if [[ $IS_RASP_VERSION_5 == true ]]; then
 else
 	venv/bin/pip install -q -r requirements_pi4.txt
 fi
+sudo chown -R {{ACCOUNT_NAME}} $WORKSPACE_PATH/$FILENAME
 sudo systemctl disable LRIMa-centrale-install-runonce.service
 sudo -k
