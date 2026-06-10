@@ -19,6 +19,7 @@ echo "{{ACCOUNT_NAME}}:{{ACCOUNT_PASSWORD}}" | sudo chpasswd
 sudo apt-get update
 sudo apt-get upgrade -y -q;
 
+
 sudo apt-get install bluez bluetooth python3 bluez-tools python3-pip python3-venv git openssh-server -q -y
 
 sudo systemctl daemon-reexec

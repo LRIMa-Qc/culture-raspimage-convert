@@ -292,6 +292,9 @@ fn handle_bootstrap_install_service(g: &Handle) -> Result<(), std::io::Error> {
     .expect("ln in bootstrap service done fucked up today,");
     Ok(())
 }
+fn handle_poppup_raspos(g: &Handle) {
+    g.rm("/usr/lib/systemd/system/userconfig.service").unwrap();
+}
 
 fn handle_all(config: &Config, g: &Handle) -> Result<(), std::io::Error> {
     let mut entries = HashMap::new();
@@ -326,5 +329,6 @@ fn handle_all(config: &Config, g: &Handle) -> Result<(), std::io::Error> {
     handle_bootstrap_install_script(&entries, g)?;
     handle_hostname(&entries, g)?;
     handle_bootstrap_install_service(g)?;
+    handle_poppup_raspos(g);
     Ok(())
 }
