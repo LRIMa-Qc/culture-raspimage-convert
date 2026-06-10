@@ -6,6 +6,7 @@ After=network.target
 Type=oneshot
 ExecStart=/var/local/LRIMa-central/install.sh
 RemainAfterExit=no
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
