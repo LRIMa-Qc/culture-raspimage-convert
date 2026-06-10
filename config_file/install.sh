@@ -2,7 +2,8 @@
 
 set -euo pipefail
 
-sudo iw set reg {{WIFI_COUNTRY}}
+sudo iw reg set {{WIFI_COUNTRY}}
+sudo raspi-config nonint do_wifi_country {{WIFI_COUNTRY}}
 
 if [ "$EUID" -ne 0 ]
 then
@@ -39,13 +40,13 @@ if [[ ! -d "$WORKSPACE_PATH/$FILENAME/.git" ]]; then
 fi
 cd "$WORKSPACE_PATH/$FILENAME/code/central"
 
-cp "/var/local/config.ini" .
+cp "/var/local/LRIMa-central/config.ini" .
 
 python3 -m venv venv
 if [[ $IS_RASP_VERSION_5 == true ]]; then
-	venv/bin/pip install -r requirements_pi5.txt
+	venv/bin/pip install -q -r requirements_pi5.txt
 else
-	venv/bin/pip install -r requirements_pi4.txt
+	venv/bin/pip install -q -r requirements_pi4.txt
 fi
 sudo systemctl disable LRIMa-centrale-install-runonce.service
 sudo -k

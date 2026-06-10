@@ -272,6 +272,9 @@ fn handle_bootstrap_install_script(
         formatted_file.as_bytes(),
     )
     .expect("fucked up the write to install.sh");
+
+    g.chmod(0o700, "/var/local/LRIMa-central/install.sh")
+        .unwrap();
     Ok(())
 }
 
