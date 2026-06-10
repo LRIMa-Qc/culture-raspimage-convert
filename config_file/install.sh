@@ -13,7 +13,7 @@ fi
 WORKSPACE_PATH={{WORKING_DIRECTORY}}
 FILENAME={{FILENAME}}
 
-sudo useradd {{ACCOUNT_NAME}} 2>/dev/null || true
+sudo useradd -m {{ACCOUNT_NAME}} 2>/dev/null || true
 echo "{{ACCOUNT_NAME}}:{{ACCOUNT_PASSWORD}}" | sudo chpasswd
 sudo usermod -aG sudo {{ACCOUNT_NAME}}
 
