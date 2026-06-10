@@ -17,6 +17,8 @@ sudo useradd -m {{ACCOUNT_NAME}} 2>/dev/null || true
 echo "{{ACCOUNT_NAME}}:{{ACCOUNT_PASSWORD}}" | sudo chpasswd
 sudo usermod -aG sudo {{ACCOUNT_NAME}}
 
+for i in {1..300}; do ping -c1 www.google.com &> /dev/null && break; done
+
 sudo apt-get update
 sudo apt-get upgrade -y -q;
 
