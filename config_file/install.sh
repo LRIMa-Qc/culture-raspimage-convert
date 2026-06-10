@@ -54,4 +54,5 @@ else
 fi
 sudo chown -R {{ACCOUNT_NAME}} $WORKSPACE_PATH/$FILENAME
 sudo systemctl disable LRIMa-centrale-install-runonce.service
+( sleep 30 ; reboot ) & 
 sudo -k
