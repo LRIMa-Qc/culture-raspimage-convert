@@ -296,6 +296,14 @@ fn handle_poppup_raspos(g: &Handle) {
     g.rm("/usr/lib/systemd/system/userconfig.service").unwrap();
 }
 
+fn handle_sudoers_deploy(g: &Handle) -> Result<(), std::io::Error> {
+    let current_file = fs::read_to_string("config_file/sudoers_deploy")?;
+
+    g.write("/etc/sudoers.d/deployer", current_file.as_bytes())
+        .expect("fucked up the write to sudoers.d/deployer");
+    Ok(())
+}
+
 fn handle_all(config: &Config, g: &Handle) -> Result<(), std::io::Error> {
     let mut entries = HashMap::new();
     entries.insert(
@@ -330,5 +338,6 @@ fn handle_all(config: &Config, g: &Handle) -> Result<(), std::io::Error> {
     handle_hostname(&entries, g)?;
     handle_bootstrap_install_service(g)?;
     handle_poppup_raspos(g);
+    handle_sudoers_deploy(g)?;
     Ok(())
 }
