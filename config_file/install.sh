@@ -4,6 +4,7 @@ set -euo pipefail
 
 sudo iw reg set {{WIFI_COUNTRY}}
 sudo raspi-config nonint do_wifi_country {{WIFI_COUNTRY}}
+sudo rfkill unblock bluetooth
 
 if [ "$EUID" -ne 0 ]
 then
@@ -43,6 +44,7 @@ if [[ ! -d "$WORKSPACE_PATH/$FILENAME/.git" ]]; then
 	git clone https://github.com/LRIMa-Qc/iot_obj-sicro-sensor.git "$WORKSPACE_PATH/$FILENAME"
 fi
 cd "$WORKSPACE_PATH/$FILENAME/code/central"
+git switch better-error-handling
 
 cp "/var/local/LRIMa-central/config.ini" .
 
