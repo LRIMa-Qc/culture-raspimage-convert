@@ -2,6 +2,7 @@ use std::{collections::HashMap, fs, path::PathBuf};
 
 use clap::Parser;
 use guestfs::{AddDriveOptArgs, Handle};
+use log::warn;
 use minijinja::Environment;
 use serde::Deserialize;
 
@@ -287,7 +288,7 @@ fn handle_bootstrap_install_service(g: &Handle) -> Result<(), std::io::Error> {
 
     g.ln_s(
         file_path,
-        "/etc/systemd/system/multi-user.target.wants/LRIMa-centrale-install-runonce.service",
+        "/etc/systemd/system/cloud-init.target.wants/LRIMa-centrale-install-runonce.service",
     )
     .expect("ln in bootstrap service done fucked up today,");
     Ok(())
