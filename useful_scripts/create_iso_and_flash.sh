@@ -11,7 +11,7 @@ git pull
 rm -f 2026-04-21-raspios-trixie-arm64-lite.img
 cp 2026-04-21-raspios-trixie-arm64-lite.img.xz.bck 2026-04-21-raspios-trixie-arm64-lite.img.xz; xz -d 2026-04-21-raspios-trixie-arm64-lite.img.xz;
 echo "decompressed, will create good image"
-cargo run -- --raspberry-pi-image-file-path 2026-04-21-raspios-trixie-arm64-lite.img --config-file-path config.json
+cargo run --release -- --raspberry-pi-image-file-path 2026-04-21-raspios-trixie-arm64-lite.img --config-file-path config.json
 echo "created, will flash"
 sudo dd if=2026-04-21-raspios-trixie-arm64-lite.img of=/dev/sdb bs=4M conv=fsync status=progress
 echo "flashed, will fill"
