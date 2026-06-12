@@ -7,6 +7,7 @@ then
     exec sudo -s "$0" "$@"
 fi
 
+git pull
 rm -f 2026-04-21-raspios-trixie-arm64-lite.img
 cp 2026-04-21-raspios-trixie-arm64-lite.img.xz.bck 2026-04-21-raspios-trixie-arm64-lite.img.xz; xz -d 2026-04-21-raspios-trixie-arm64-lite.img.xz;
 echo "decompressed, will create good image"
