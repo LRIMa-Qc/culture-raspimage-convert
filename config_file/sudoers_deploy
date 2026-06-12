@@ -2,4 +2,4 @@
 %sudo ALL= NOPASSWD: /bin/systemctl stop LRIMa-central
 %sudo ALL= NOPASSWD: /bin/systemctl restart LRIMa-central
 %sudo ALL= NOPASSWD: /usr/bin/chgrp -R /sys/class/leds/PWR
-%sudo ALL= NOPASSWD: /usr/bin/chmod 660 -R /sys/class/leds/PWR
+%sudo ALL= NOPASSWD: /usr/bin/chmod 606 -R /sys/class/leds/PWR
