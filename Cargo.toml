@@ -2,6 +2,7 @@
 name = "culture-raspimage-convert"
 version = "1.0.0"
 edition = "2024"
+default-run = "image-core"
 
 [dependencies]
 clap = { version = "4.6.1", features = ["derive"] }
@@ -11,4 +12,13 @@ log = "0.4.32"
 minijinja = "2.20.0"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.150"
+ssid = "0.1.2"
 wpa-psk = "0.2.4"
+
+[[bin]]
+name = "image-core"
+src = "src/image-core/main.rs"
+
+[[bin]]
+name = "image-installer"
+src = "src/image-installer/main.rs"

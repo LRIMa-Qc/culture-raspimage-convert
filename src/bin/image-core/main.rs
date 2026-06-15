@@ -1,46 +1,42 @@
 use std::{collections::HashMap, fs, path::PathBuf};
 
 use clap::Parser;
+use culture_raspimage_convert::config_commons::Config;
 use guestfs::{AddDriveOptArgs, Handle};
-use log::warn;
 use minijinja::Environment;
-use serde::Deserialize;
-
-#[derive(Deserialize)]
-struct Config {
-    working_directory: String,
-    filename_of_repo: String,
-    standard_logs: String,
-    error_logs: String,
-    bluetooth_controller_name: String,
-    obj_id: String,
-    auth_token: String,
-    wifi_ssid: String,
-    wifi_password: String,
-    wifi_country: String,
-    hostname: String,
-    account_name: String,
-    account_password: String,
-}
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
-    #[arg(
-        short,
-        long,
-        help = "JSON file with all required missing values in the templates"
-    )]
-    config_file_path: String,
+    #[clap(flatten)]
+    config: Group,
+
     #[arg(short, long, help = "Raspberry pi image path")]
     raspberry_pi_image_file_path: String,
 }
 
+#[derive(Debug, clap::Args)]
+#[group(required = true, multiple = false)]
+pub struct Group {
+    /// Argument1.
+    #[clap(short, long)]
+    config_file_path: Option<String>,
+    /// Argument2.
+    #[clap(short, long)]
+    config_json: Option<String>,
+}
+
 fn main() {
     let arg = Args::parse();
-    let config: Config =
-        serde_json::from_str(&fs::read_to_string(PathBuf::from(arg.config_file_path)).unwrap())
-            .expect("invalid config json");
+    let config: Config;
+    if arg.config.config_file_path.is_some() {
+        config = serde_json::from_str(
+            &fs::read_to_string(PathBuf::from(arg.config.config_file_path.unwrap())).unwrap(),
+        )
+        .expect("invalid config json");
+    } else {
+        config = serde_json::from_str(&arg.config.config_json.unwrap().as_str()).unwrap();
+    }
 
     let g = Handle::create().unwrap();
     g.add_drive(
