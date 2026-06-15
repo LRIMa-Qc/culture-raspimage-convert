@@ -17,10 +17,11 @@ struct Args {
 
 #[derive(Debug, clap::Args)]
 #[group(required = true, multiple = false)]
-pub struct Group {
+struct Group {
     /// Argument1.
     #[clap(long)]
     config_file_path: Option<String>,
+
     /// Argument2.
     #[clap(long)]
     config_json: Option<String>,
