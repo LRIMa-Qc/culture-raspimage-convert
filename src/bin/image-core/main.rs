@@ -19,10 +19,10 @@ struct Args {
 #[group(required = true, multiple = false)]
 pub struct Group {
     /// Argument1.
-    #[clap(short, long)]
+    #[clap(long)]
     config_file_path: Option<String>,
     /// Argument2.
-    #[clap(short, long)]
+    #[clap(long)]
     config_json: Option<String>,
 }
 
