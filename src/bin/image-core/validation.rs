@@ -3,7 +3,7 @@ use regex::Regex;
 use std::{self, path::PathBuf};
 
 #[derive(Debug)]
-struct InvalidEntryError {
+pub struct InvalidEntryError {
     msg: String,
 }
 impl InvalidEntryError {

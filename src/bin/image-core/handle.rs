@@ -110,12 +110,7 @@ pub fn handle_hostname(
     let current_file = fs::read_to_string("config_file/hostname")?;
     let mut missing_keys = HashMap::new();
 
-    let reg = Regex::new("^[a-z][-a-z0-9]*").unwrap();
-
     let hostname = entries.get("HOSTNAME").unwrap().clone();
-    if hostname.len() != reg.find(hostname.as_str()).expect("Did not match Regex. Is the hostname only capital letters, lowercase letters,\"-\" and numbers? ").len() {
-        panic!("Did not match Regex. Is the hostname only capital letters, lowercase letters,\"-\" and numbers?")
-    }
     missing_keys.insert(String::from("HOSTNAME"), hostname);
 
     let formatted_file = format_file_from_keys_in_template(&current_file, missing_keys);
