@@ -44,7 +44,6 @@ if [[ ! -d "$WORKSPACE_PATH/$FILENAME/.git" ]]; then
 	git clone https://github.com/LRIMa-Qc/iot_obj-sicro-sensor.git "$WORKSPACE_PATH/$FILENAME"
 fi
 cd "$WORKSPACE_PATH/$FILENAME/code/central"
-git switch better-error-handling
 
 cp "/var/local/LRIMa-central/config.ini" .
 

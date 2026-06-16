@@ -10,6 +10,7 @@ guestfs = "0.1.0"
 hex = "0.4.3"
 log = "0.4.32"
 minijinja = "2.20.0"
+regex = "1.12.4"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.150"
 ssid = "0.1.2"
