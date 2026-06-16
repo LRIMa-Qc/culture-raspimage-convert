@@ -19,16 +19,18 @@ impl std::fmt::Display for InvalidEntryError {
 }
 impl std::error::Error for InvalidEntryError {}
 fn validate_unix(name: &String, source: &str) -> Result<(), InvalidEntryError> {
-    let reg = Regex::new("^[a-z][-a-z0-9]*\\$").unwrap();
+    let reg = Regex::new("^[a-zA-Z][-a-z0-9A-Z]*").unwrap();
     let option_match_val = reg.find(name.as_str());
     if option_match_val.is_none() {
+        dbg!(option_match_val);
         return Err(InvalidEntryError::new(format!(
             "{} is not correct! please ensure you only keep lowercase and uppercase char, dashes and numbers!",
             source
         )));
     };
-    let match_val = option_match_val.unwrap();
+    let match_val = option_match_val.unwrap().as_str();
     if name.len() != match_val.len() {
+        dbg!(match_val);
         return Err(InvalidEntryError::new(format!(
             "{} is not correct! please ensure you only keep lowercase and uppercase char, dashes and numbers!",
             source
