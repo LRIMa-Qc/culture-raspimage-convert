@@ -1,5 +1,3 @@
-use culture_raspimage_convert::config_commons::Config;
-use serde_json::Serializer;
 use std::io::{Write, stdin, stdout};
 
 fn main() {
