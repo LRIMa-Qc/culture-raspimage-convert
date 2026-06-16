@@ -19,7 +19,7 @@ impl std::fmt::Display for InvalidEntryError {
 }
 impl std::error::Error for InvalidEntryError {}
 fn validate_unix(name: &String, source: &str) -> Result<(), InvalidEntryError> {
-    let reg = Regex::new("^[a-zA-Z][-a-z0-9A-Z]*").unwrap();
+    let reg = Regex::new("^[a-zA-Z][-a-z0-9A-Z_]*").unwrap();
     let option_match_val = reg.find(name.as_str());
     if option_match_val.is_none() {
         dbg!(option_match_val);
