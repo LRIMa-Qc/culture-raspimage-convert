@@ -91,8 +91,8 @@ fn validate_wifi(ssid: &String, password: &String) -> Result<(), InvalidEntryErr
         Ok(v) => v,
         Err(e) => {
             return Err(InvalidEntryError::new(format!(
-                "{}: the password format is not correct! Please correct and try again!",
-                e
+                "{}: the password format is not correct! Please correct and try again! password: {}",
+                e, password
             )));
         }
     };
