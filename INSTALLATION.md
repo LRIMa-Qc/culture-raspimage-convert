@@ -13,7 +13,7 @@ From within a greenhouse, select connected devices.
 click on it.
 
 
-> [!CRITICAL]
+> [!CAUTION]
 > THIS PROGRAM ONLY WORKS ON CHROMIUM BROWSERS
 There should be a "download Image" button at the top of the screen.
 
@@ -30,8 +30,9 @@ Can be obtained by copying the gray text besides the name of the central
 Can be obtained by clicking the "copy Auth token" in the website
 ![[Pasted image 20260626114203.png]]
 
-> [!INFO]
+> [!NOTE]
 > This has not been tested with 5Ghz wifi. For the sake of stability, please stay on 2.4Ghz wifi.
+
 ## WIFI SSID
 Enter your wifi name
 
@@ -76,6 +77,6 @@ then the bluetooth adaptator
 then power on the raspberry pi!
 
 wait for around 15 minutes...
-![[Pasted image 20260626153424.png]]
+![[assets/Pasted image 20260626153424.png]]
 And it should be good!
 
