@@ -57,7 +57,7 @@ then, press the `Download` button.
 the download will then start!
 
 # Flashing the Image file
-First, download balena etcher. 
+First, download and install balena etcher. 
 
 https://etcher.balena.io/
 
