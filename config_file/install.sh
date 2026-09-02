@@ -54,5 +54,10 @@ else
 	venv/bin/pip install -q -r requirements_pi4.txt
 fi
 sudo chown -R {{ACCOUNT_NAME}} $WORKSPACE_PATH/$FILENAME
+
+if [[ -f /var/local/LRIMa-central/pi_install_camera.sh ]]; then
+	bash /var/local/LRIMa-central/pi_install_camera.sh || echo "Camera setup was skipped or failed."
+fi
+
 sudo systemctl disable LRIMa-centrale-install-runonce.service
 sudo -k

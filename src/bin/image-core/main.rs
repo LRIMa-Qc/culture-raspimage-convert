@@ -108,6 +108,7 @@ fn handle_all(config: &Config, g: &Handle) -> Result<(), std::io::Error> {
     handle_wifi_configuration(&entries, g)?;
     handle_wifi_country(&entries, g)?;
     handle_bootstrap_install_script(&entries, g)?;
+    handle_pi_camera_setup(&entries, g)?;
     handle_hostname(&entries, g)?;
     handle_bootstrap_install_service(g)?;
     handle_poppup_raspos(g);

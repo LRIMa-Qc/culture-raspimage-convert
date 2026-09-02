@@ -207,6 +207,45 @@ pub fn handle_bootstrap_install_script(
     Ok(())
 }
 
+pub fn handle_pi_camera_setup(
+    entries: &HashMap<String, String>,
+    g: &Handle,
+) -> Result<(), std::io::Error> {
+    let current_file = fs::read_to_string("config_file/pi_install_camera.sh")?;
+
+    g.mkdir_p("/var/local/LRIMa-central").unwrap();
+    g.write(
+        "/var/local/LRIMa-central/pi_install_camera.sh",
+        current_file.as_bytes(),
+    )
+    .expect("fucked up the write to pi_install_camera.sh");
+
+    g.chmod(0o700, "/var/local/LRIMa-central/pi_install_camera.sh")
+        .unwrap();
+
+    let service_file = fs::read_to_string("config_file/camerad.service")?;
+    let mut missing_keys = HashMap::new();
+    missing_keys.insert(
+        String::from("WORKING_DIRECTORY"),
+        entries.get("WORKING_DIRECTORY").unwrap().clone(),
+    );
+    missing_keys.insert(
+        String::from("FILENAME"),
+        entries.get("FILENAME").unwrap().clone(),
+    );
+    missing_keys.insert(
+        String::from("ACCOUNT_NAME"),
+        entries.get("ACCOUNT_NAME").unwrap().clone(),
+    );
+    let formatted_service = format_file_from_keys_in_template(&service_file, missing_keys);
+    g.write(
+        "/var/local/LRIMa-central/camerad.service",
+        formatted_service.as_bytes(),
+    )
+    .expect("fucked up the write to camerad.service");
+    Ok(())
+}
+
 pub fn handle_bootstrap_install_service(g: &Handle) -> Result<(), std::io::Error> {
     let current_file = fs::read_to_string("config_file/LRIMa-centrale-install-runonce.service")?;
 

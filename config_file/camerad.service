@@ -5,14 +5,14 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/home/lrima/iot_obj-sicro-sensor/code/central/camera-2/startup.sh
+ExecStart={{WORKING_DIRECTORY}}/{{FILENAME}}/code/central/camera-2/startup.sh
 Restart=on-failure
 RestartSec=10
 StartLimitBurst=20
 StartLimitIntervalSec=600
 # Optional: run as specific user/group
-User=lrima
-Group=lrima
+User={{ACCOUNT_NAME}}
+Group={{ACCOUNT_NAME}}
 # Optional: environment file
 # EnvironmentFile=/etc/default/my-script
 
