@@ -24,7 +24,13 @@ sudo apt-get update
 sudo apt-get upgrade -y -q;
 
 sudo apt-get install bluez bluetooth python3 bluez-tools python3-pip python3-venv git openssh-server -q -y
-sudo apt-get install python3-gpiozero python3-pigpio pigpio python3-picamera2 python3-libcamera -q -y
+sudo apt-get install python3-gpiozero python3-pigpio python3-picamera2 python3-libcamera -q -y
+
+wget https://github.com/joan2937/pigpio/archive/master.zip
+unzip master.zip
+cd pigpio-master
+make
+sudo make install
 
 sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
