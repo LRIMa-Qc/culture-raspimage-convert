@@ -23,7 +23,13 @@ for i in {1..300}; do ping -c1 www.google.com &> /dev/null && break; done
 sudo apt-get update
 sudo apt-get upgrade -y -q;
 
-sudo apt-get install bluez bluetooth python3 bluez-tools python3-pip python3-venv git openssh-server -q -y
+
+sudo apt-get install openssh-server -q -y
+
+sudo systemctl enable --now networkmanager
+sudo systemctl enable --now ssh
+
+sudo apt-get install bluez bluetooth python3 bluez-tools python3-pip python3-venv git -q -y
 sudo apt-get install python3-gpiozero python3-pigpio python3-picamera2 python3-libcamera -q -y
 
 wget https://github.com/joan2937/pigpio/archive/master.zip
@@ -36,7 +42,7 @@ sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
 sudo systemctl restart bluetooth
 sudo systemctl enable --now bluetooth
-sudo systemctl enable --now NetworkManager
+sudo systemctl enable --now networkmanager
 sudo systemctl enable --now ssh
 
 RASP_VERSION="$(cat /sys/firmware/devicetree/base/model)"
