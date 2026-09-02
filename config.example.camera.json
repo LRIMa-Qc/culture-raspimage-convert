@@ -11,5 +11,7 @@
     "hostname": "LRIMa-Central-3",
     "account_name": "Sire_patate",
     "account_password": "et son royaume",
-	"wifi_country": "CA"
+	"wifi_country": "CA",
+    "camera_obj_id": "camera-object-id",
+    "camera_auth_token": "camera_auth_token"
 }

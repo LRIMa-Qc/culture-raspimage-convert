@@ -102,6 +102,16 @@ fn handle_all(config: &Config, g: &Handle) -> Result<(), std::io::Error> {
         config.account_password.clone(),
     );
 
+    if let Some(camera_obj_id) = &config.camera_obj_id {
+        entries.insert(String::from("CAMERA_OBJ_ID"), camera_obj_id.clone());
+    }
+    if let Some(camera_auth_token) = &config.camera_auth_token {
+        entries.insert(
+            String::from("CAMERA_AUTH_TOKEN"),
+            camera_auth_token.clone(),
+        );
+    }
+
     handle_systemd_boot_services(&entries, g)?;
     handle_bluetooth_services(&entries, g)?;
     handle_config_file(&entries, g)?;

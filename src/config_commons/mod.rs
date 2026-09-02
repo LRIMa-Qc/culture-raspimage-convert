@@ -15,4 +15,6 @@ pub struct Config {
     pub hostname: String,
     pub account_name: String,
     pub account_password: String,
+    pub camera_obj_id: Option<String>,
+    pub camera_auth_token: Option<String>,
 }

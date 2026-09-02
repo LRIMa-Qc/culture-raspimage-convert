@@ -93,6 +93,13 @@ pub fn handle_config_file(
         entries.get("AUTH_TOKEN").unwrap().clone(),
     );
 
+    if let Some(camera_obj_id) = entries.get("CAMERA_OBJ_ID") {
+        missing_keys.insert(String::from("CAMERA_OBJ_ID"), camera_obj_id.clone());
+    }
+    if let Some(camera_auth_token) = entries.get("CAMERA_AUTH_TOKEN") {
+        missing_keys.insert(String::from("CAMERA_AUTH_TOKEN"), camera_auth_token.clone());
+    }
+
     let formatted_file = format_file_from_keys_in_template(&current_file, missing_keys);
     g.mkdir_p("/var/local/LRIMa-central").unwrap();
     g.write(
