@@ -1,0 +1,15 @@
+[Unit]
+Description=LRIMa Central camera setup
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Slice=LRIMa-bootstrap.slice
+ExecStart=/var/local/LRIMa-central/pi_install_camera.sh
+RemainAfterExit=no
+Restart=on-failure
+TimeoutStartSec=infinity
+
+[Install]
+WantedBy=multi-user.target

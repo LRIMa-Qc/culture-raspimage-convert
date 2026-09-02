@@ -1,0 +1,14 @@
+[Unit]
+Description=LRIMa Central camera overlay probe
+After=local-fs.target
+ConditionPathExists=/var/local/LRIMa-central/camera_probe.sh
+
+[Service]
+Type=oneshot
+Slice=LRIMa-bootstrap.slice
+ExecStart=/var/local/LRIMa-central/camera_probe.sh
+RemainAfterExit=no
+TimeoutStartSec=infinity
+
+[Install]
+WantedBy=multi-user.target

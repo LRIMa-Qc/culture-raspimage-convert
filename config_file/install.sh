@@ -16,15 +16,15 @@ FILENAME={{FILENAME}}
 
 sudo useradd -m {{ACCOUNT_NAME}} 2>/dev/null || true
 echo "{{ACCOUNT_NAME}}:{{ACCOUNT_PASSWORD}}" | sudo chpasswd
-sudo usermod -aG sudo {{ACCOUNT_NAME}}
+sudo usermod -aG sudo,video,gpio,i2c,spi {{ACCOUNT_NAME}}
 
 for i in {1..300}; do ping -c1 www.google.com &> /dev/null && break; done
 
 sudo apt-get update
 sudo apt-get upgrade -y -q;
 
-
 sudo apt-get install bluez bluetooth python3 bluez-tools python3-pip python3-venv git openssh-server -q -y
+sudo apt-get install python3-gpiozero python3-pigpio pigpio python3-picamera2 python3-libcamera -q -y
 
 sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
@@ -47,7 +47,7 @@ cd "$WORKSPACE_PATH/$FILENAME/code/central"
 
 cp "/var/local/LRIMa-central/config.ini" .
 
-python3 -m venv venv
+python3 -m venv --system-site-packages venv
 if [[ $IS_RASP_VERSION_5 == true ]]; then
 	venv/bin/pip install -q -r requirements_pi5.txt
 else
@@ -55,9 +55,4 @@ else
 fi
 sudo chown -R {{ACCOUNT_NAME}} $WORKSPACE_PATH/$FILENAME
 
-if [[ -f /var/local/LRIMa-central/pi_install_camera.sh ]]; then
-	bash /var/local/LRIMa-central/pi_install_camera.sh || echo "Camera setup was skipped or failed."
-fi
-
-sudo systemctl disable LRIMa-centrale-install-runonce.service
-sudo -k
+sudo systemctl enable --now LRIMa-camera-setup.service

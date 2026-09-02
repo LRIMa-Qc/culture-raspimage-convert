@@ -176,6 +176,7 @@ pub fn handle_bootstrap_install_script(
     g: &Handle,
 ) -> Result<(), std::io::Error> {
     let current_file = fs::read_to_string("config_file/install.sh")?;
+    let probe_script = fs::read_to_string("config_file/camera_probe.sh")?;
     let mut missing_keys = HashMap::new();
 
     missing_keys.insert(
@@ -210,6 +211,13 @@ pub fn handle_bootstrap_install_script(
     .expect("fucked up the write to install.sh");
 
     g.chmod(0o700, "/var/local/LRIMa-central/install.sh")
+        .unwrap();
+    g.write(
+        "/var/local/LRIMa-central/camera_probe.sh",
+        probe_script.as_bytes(),
+    )
+    .expect("fucked up the write to camera_probe.sh");
+    g.chmod(0o700, "/var/local/LRIMa-central/camera_probe.sh")
         .unwrap();
     Ok(())
 }
@@ -254,17 +262,34 @@ pub fn handle_pi_camera_setup(
 }
 
 pub fn handle_bootstrap_install_service(g: &Handle) -> Result<(), std::io::Error> {
-    let current_file = fs::read_to_string("config_file/LRIMa-centrale-install-runonce.service")?;
+    let slice = fs::read_to_string("config_file/LRIMa-bootstrap.slice")?;
+    g.write("/etc/systemd/system/LRIMa-bootstrap.slice", slice.as_bytes())
+        .expect("fucked up the write to LRIMa-bootstrap.slice");
 
-    let file_path = "/etc/systemd/system/LRIMa-centrale-install-runonce.service";
-
-    g.write(file_path, current_file.as_bytes()).unwrap();
-
+    let probe_service = fs::read_to_string("config_file/LRIMa-camera-probe.service")?;
+    let probe_path = "/etc/systemd/system/LRIMa-camera-probe.service";
+    g.write(probe_path, probe_service.as_bytes())
+        .expect("fucked up the write to LRIMa-camera-probe.service");
     g.ln_s(
-        file_path,
-        "/etc/systemd/system/cloud-init.target.wants/LRIMa-centrale-install-runonce.service",
+        probe_path,
+        "/etc/systemd/system/multi-user.target.wants/LRIMa-camera-probe.service",
     )
-    .expect("ln in bootstrap service done fucked up today,");
+    .expect("symlink camera probe service failed");
+
+    let install_service = fs::read_to_string("config_file/LRIMa-bootstrap-install.service")?;
+    g.write(
+        "/etc/systemd/system/LRIMa-bootstrap-install.service",
+        install_service.as_bytes(),
+    )
+    .expect("fucked up the write to LRIMa-bootstrap-install.service");
+
+    let camera_service = fs::read_to_string("config_file/LRIMa-camera-setup.service")?;
+    g.write(
+        "/etc/systemd/system/LRIMa-camera-setup.service",
+        camera_service.as_bytes(),
+    )
+    .expect("fucked up the write to LRIMa-camera-setup.service");
+
     Ok(())
 }
 pub fn handle_poppup_raspos(g: &Handle) {

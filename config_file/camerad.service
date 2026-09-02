@@ -13,6 +13,7 @@ StartLimitIntervalSec=600
 # Optional: run as specific user/group
 User={{ACCOUNT_NAME}}
 Group={{ACCOUNT_NAME}}
+SupplementaryGroups=video,gpio,i2c,spi
 # Optional: environment file
 # EnvironmentFile=/etc/default/my-script
 
